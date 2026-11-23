@@ -79,9 +79,9 @@ const TROCAS=[
  {mascara:'C_ d_ _r_a_a',real:'CD da Ariana',arte:'cdAriana',anim:'ouvidos',frase:'Ariana não! Meus ouvidos!'},
  {mascara:'_o_e de _a_a_a',real:'doce de banana',arte:'doce',anim:'enjoo',frase:'Eca! Banana até no doce?!'},
  {mascara:'_o_i_ha _o_i_ha',real:'coxinha molinha de catupiry',arte:'coxinha',anim:'desdem',frase:'Catupiry? Sério mesmo?'},
- {mascara:'C_ d_s B__ G__',real:'CD dos Bee Gees',arte:'cdBeeGees',anim:'grito',frase:'Bee gees, credo que horror'},
+ {mascara:'C_ d_s B__ G__',real:'CD dos Bee Gees',arte:'cdBeeGees',anim:'grito',frase:'Bee gees, credo que horror!'},
  {mascara:'b_r_t_ _i_ant_',real:'barata gigante',arte:'barata',anim:'fuga',frase:'AAAH! Sai, sai, sai!'},
- {mascara:'_a_o de b_r_a_ha',real:'sapo de borracha realista',arte:'sapo',anim:'fuga',frase:'SOCORRO! Parece de verdade!'},
+ {mascara:'_a_o de b_r_a_ha',real:'sapo de borracha realista',arte:'sapo',anim:'fuga',frase:'SOCORRO! Parece de verdade!'},
  {mascara:'_u_im de _ei_e',real:'pudim de leite',arte:'pudim',anim:'enjoo',frase:'Pudim não! Que textura é essa?!'}
 ];
 /* ===== FIM DA ÁREA DE EDIÇÃO ===== */
@@ -269,14 +269,14 @@ const CENAS={
   abrir(){this.abrindo=0;this.t1=performance.now()+(REDUZ?-1000:240);this.pousou=REDUZ;const troca=proximaTroca(),d=document.createElement('div');d.className='card';d.style.cssText='left:20px;right:20px;top:452px';d.append('Você troca o presente por');d.appendChild(document.createElement('br'));const b=document.createElement('em');b.textContent='"'+troca.mascara+'"';d.appendChild(b);d.append('?');ui.appendChild(d);const sim=botao('SIM','teal big','left:20px;width:154px;top:616px',()=>{if(!this.abrindo)ir('imagina')}),nao=botao('NÃO','pink big','right:20px;width:154px;top:616px',()=>{if(this.abrindo||fechando)return;this.abrindo=performance.now();sim.disabled=nao.disabled=true;CENAS.final.trocou=false;later(()=>{atual=proximoPresente();ir('final','flash')},620)})}},
  imagina:{fundo(c){curtains(c,282);floor(c,282);rect(c,0,306,180,54,C.ink);ell(c,90,297,42,4,C.night)},
   abrir(){this.abrindo=0;const m=document.createElement('div');m.className='bubble pop';m.style.cssText='left:22px;right:22px;top:72px;--tail:48%;font-size:30px';m.setAttribute('role','img');m.setAttribute('aria-label',trocaAtual.real);ui.appendChild(m);
-   const masc=[...trocaAtual.mascara],letras=[];[...trocaAtual.real].forEach((ch,i)=>{if(ch===' '){m.append(' ');return}const s=document.createElement('span'),fixa=masc[i]&&masc[i]!=='_';s.textContent=masc[i]==='_'?'_':ch;if(i>=masc.length)s.className='falta';if(!fixa){s.dataset.c=ch;letras.push(s)}m.appendChild(s)});
+   const masc=[...trocaAtual.mascara],letras=[];let palavra=null;[...trocaAtual.real].forEach((ch,i)=>{if(ch===' '){m.append(' ');palavra=null;return}if(!palavra){palavra=document.createElement('span');palavra.style.whiteSpace='nowrap';m.appendChild(palavra)}const s=document.createElement('span'),fixa=masc[i]&&masc[i]!=='_';s.textContent=masc[i]==='_'?'_':ch;if(i>=masc.length)s.className='falta';if(!fixa){s.dataset.c=ch;letras.push(s)}palavra.appendChild(s)});
    const abre=()=>{this.abrindo=performance.now();later(()=>{CENAS.final.trocou=true;ir('final','flash')},620)};
    const completa=()=>{m.style.removeProperty('--d');m.classList.remove('pop');void m.offsetWidth;m.classList.add('pop');tremer(2,180);later(abre,REDUZ?1400:800)};
    const revela=i=>{if(i>=letras.length)return completa();letras[i].textContent=letras[i].dataset.c;letras[i].className='revela';later(()=>revela(i+1),170)};
    if(REDUZ){letras.forEach(s=>{s.textContent=s.dataset.c;s.className=''});completa()}else later(()=>revela(0),ABRE+420)},
   quadro(c,t){const m=amb(t);luzes(c,m,286);let dx=0,y=-Math.round(Math.abs(Math.sin(m/260))*4);if(this.abrindo){const a=t-this.abrindo;dx=Math.round(Math.sin(a/22)*Math.min(4,a/60));y=0;if(!REDUZ){raios(c,135,172,Math.max(0,Math.min(120,a/3)),m/260,8,C.paper,.3);if(Math.random()<.5)explosao(135,172,2,CONFETE,1)}}kizi(c,50,170+y,{arms:'up',mood:'smile'});gift(c,112+dx,150+y,46);brilhos(c,m,[[108,150],[164,158],[160,200]]);[0,1,2].forEach(i=>{const q=(m/2100+i/3)%1;if(q<.8)coracao(c,[34,142,126][i]+Math.round(Math.sin(q*8)*3),150-q*42,i%2?C.pinkL:C.pink)});if(this.abrindo&&t-this.abrindo>500){c.fillStyle=C.paper;c.fillRect(0,0,180,360)}}},
  final:{fundo(c){curtains(c,282);floor(c,282);rect(c,0,306,180,54,C.ink);ell(c,90,297,42,4,C.night)},
-  abrir(){const agora=performance.now();this.t0=this.trocou?agora:agora+ABRE;const m=document.createElement('div');m.className='bubble pop';m.style.cssText='left:22px;right:22px;top:72px;--tail:48%';ui.appendChild(m);const outro=()=>botao(this.trocou?'Próximo':'Pegar outro presente!','cta','left:20px;right:20px;top:640px',()=>ir('minhocas'));
+  abrir(){const agora=performance.now();this.t0=this.trocou?agora:agora+ABRE;const m=document.createElement('div');m.className='bubble pop';m.style.cssText='left:22px;right:22px;top:72px;--tail:48%';ui.appendChild(m);const outro=()=>botao('Novo Presente','cta','left:20px;right:20px;top:640px',()=>ir('minhocas'));
    if(!this.trocou){m.textContent=atual.fala||FRASES.nao.replace('{presente}',atual.ganho||atual.nome);outro();later(()=>explosao(90,190,44,CONFETE,1.4),ABRE);return}
    const an=ANIM[trocaAtual.anim]||ANIM.arremesso;this.anim=an;
    if(matchMedia('(prefers-reduced-motion:reduce)').matches){this.t0=agora-an.dur;m.textContent=trocaAtual.frase;outro();return}
